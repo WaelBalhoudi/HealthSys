@@ -1,0 +1,411 @@
+.ask-ai {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    right: -30px;
+    bottom: 50vh;
+    z-index: 99999;
+    border: 3px solid var(--primary-color);
+    background-color: white;
+    border-radius: 30px;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    transition: all 0.4s;
+    box-shadow: -5px 5px 15px rgba(171, 232, 251, 0.244);
+}
+a{
+    text-decoration: underline !important;
+
+}
+.ask-ai.open {
+    height: 100vh;
+    right: 0 !important;
+    top: 0 !important;
+    border-radius: 10px;
+    border-width: 1px;
+    background-color: #52bdff;
+}
+
+.header-bar {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100px;
+    display: none;
+    background-color: white;
+    border-radius: 0 0 10px 10px;
+    border: none;
+    box-shadow: 0px 4px 10px rgba(188, 188, 188, 0.795);
+}
+
+.header-bar button {
+    margin-right: 10px;
+    border: none;
+    background-color: transparent;
+}
+
+.header-bar button i {
+    color: #04BD6C;
+    font-size: 18px;
+}
+
+.header-bar h4 {
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.header-bar p {
+    margin-top: 0;
+    color: #04BD6C;
+}
+
+.header-bar p i {
+    font-size: 5px;
+}
+
+.header-bar img {
+    position: relative !important;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border: 1px solid var(--primary-color);
+    background-color: rgb(112, 220, 250);
+    border-radius: 50%;
+}
+
+.ask-ai.open.active .header-bar {
+    display: flex;
+}
+
+.ask-ai.active:not(.open) .header-bar {
+    display: none;
+}
+
+.ask-ai.open.active {
+    max-width: 500px;
+    width: 100%;
+}
+
+.ask-ai.open .messages-section {
+    position: absolute;
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+    gap: 20px;
+    bottom: 0 !important;
+    border-radius: 50px 50px 0 0;
+    width: 100%;
+    height: 70%;
+    background-color: white;
+}
+
+.ask-ai.open .messages-section .messages {
+    display: block;
+}
+
+.messages-section .messages .conversations {
+    margin-top: 20px;
+    display: flex;
+    max-height: 85%;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #52bdff transparent;
+}
+
+.messages-section .messages .conversations::-webkit-scrollbar {
+    width: 5px;
+}
+
+.messages-section .messages .conversations::-webkit-scrollbar-thumb {
+    background: #52bdff;
+    border-radius: 5px;
+}
+
+.messages-section .messages .conversations .message {
+    width: 65%;
+    margin-block: 15px;
+}
+
+.messages-section .messages .conversations .message.left {
+    background: linear-gradient(135deg, #52bdff, #a3d8f4);
+    color: white;
+    border-radius: 15px 15px 15px 0;
+    padding: 12px 15px;
+    position: relative;
+}
+
+.messages-section .messages .conversations .message.left .ai-message::before {
+    content: "🩺";
+    position: absolute;
+    left: -20px;
+    top: 5px;
+    font-size: 18px;
+}
+
+.messages-section .messages .conversations .message.right {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 15px 15px 0 15px;
+    padding: 12px 15px;
+    align-self: flex-end;
+}
+
+.messages-section .messages .conversations .message .user-message,
+.messages-section .messages .conversations .message .ai-message {
+    word-wrap: break-word;
+}
+
+.messages-section .messages .conversations .message .timestamp {
+    display: block;
+    font-size: 10px;
+    color: #ccc;
+    margin-top: 5px;
+}
+
+.ask-ai .messages-section .messages {
+    display: none;
+}
+
+.ask-ai.open .messages-section .messages {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: inherit;
+    padding-top: 30px;
+    padding-inline: 10px;
+}
+
+.ask-ai .messages-section .messages .chatbot-img {
+    display: none;
+}
+
+.ask-ai.open .messages-section .messages .chatbot-img {
+    width: 150px;
+    height: auto;
+    display: block;
+    position: absolute;
+    top: -100px;
+    left: 33%;
+}
+
+.ask-ai.open .messages-section .messages .chatbot-img::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    width: 50px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    filter: blur(5px);
+    border-radius: 50%;
+    transform: translateX(-50%);
+}
+
+.ask-ai.open .messages-section .chat-input {
+    position: absolute !important;
+    bottom: 35px !important;
+    width: 100%;
+    height: 20px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.ask-ai.open .messages-section .chat-input i {
+    display: block !important;
+    position: absolute;
+    right: 30px !important;
+    top: 25px !important;
+    border: none;
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
+.ask-ai.open .messages-section .chat-input img {
+    display: none !important;
+}
+
+.ask-ai.open .messages-section .chat-input input {
+    width: 90% !important;
+    height: 50px !important;
+    border-radius: 30px;
+    margin: auto;
+    border: 1px solid var(--primary-color);
+    padding-right: 50px;
+    padding-left: 15px;
+    margin-bottom: 50px !important;
+}
+
+.ask-ai .chat-input img {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    border: 3px solid var(--primary-color);
+    background-color: rgb(112, 220, 250);
+    border-radius: 50%;
+}
+
+.ask-ai input {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background-color: transparent;
+    border: none;
+    display: none;
+    padding-right: 20px;
+    margin-left: 20px;
+}
+
+.ask-ai input:focus {
+    background-color: white;
+    border: none;
+    outline: none;
+}
+
+.ask-ai .fa-paper-plane {
+    color: var(--primary-color);
+    font-size: 1.7rem;
+    right: 15px;
+    position: absolute;
+    border: 3px solid var(--primary-color);
+    background-color: rgb(112, 220, 250);
+    border-radius: 50%;
+    padding: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.ask-ai.active {
+    visibility: visible;
+    opacity: 1;
+    right: 15px;
+    justify-content: none;
+    width: 300px;
+}
+
+.ask-ai.active input {
+    display: block;
+}
+
+.ask-ai.active .chat-input img {
+    right: 7px;
+    top: 2px;
+}
+
+.typing-indicator {
+    margin-right: 10px;
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    height: 20px;
+}
+
+.typing-indicator span {
+    width: 6px;
+    height: 6px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    animation: bounce 1s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-8px);
+    }
+}
+
+.hide {
+    display: none !important;
+}
+
+.ia-btn {
+    cursor: pointer;
+}
+
+.half-closed {
+    width: 60px !important;
+    height: 60px !important;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    right: -5px !important;
+}
+
+.half-closed input {
+    display: none !important;
+}
+
+/* Modal styles */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: none;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #343a40;
+}
+
+.modal-body {
+    padding: 20px;
+    font-size: 16px;
+    color: #495057;
+}
+
+.modal-body ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.modal-body li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.modal-body li::before {
+    content: "✔️";
+    margin-right: 10px;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 15px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
