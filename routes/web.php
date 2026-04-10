@@ -16,8 +16,9 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\ComptabiliteController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\MedicalRecordController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicalAssistantController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request; // ← Added missing import
 
 Route::get('/', function () {
     return view('welcome');
@@ -77,7 +78,6 @@ Route::middleware(['auth', 'role:doctor,chef_medecine'])->prefix('doctor')->name
 });
 
 // Routes pour les secrétaires
-
 Route::middleware(['auth', 'role:secretaire,chef_medecine'])->prefix('secretaire')->name('secretaire.')->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
@@ -104,48 +104,39 @@ Route::middleware(['auth', 'role:chef_medecine'])->prefix('admin')->name('admin.
         return view('admin.dashboard');
     })->name('dashboard');
     
-    
-    // Gestion des médecins
+    // ✅ Gestion des médecins - FIXED: Removed duplicate manual routes
+    // Route::resource already creates: index, create, store, edit, update, destroy, show
     Route::resource('doctors', DoctorController::class);
-    Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
-    Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
-    Route::get('/doctors/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
-    Route::put('/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
-    Route::delete('/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
     
     // Gestion des secrétaires
     Route::resource('secretaries', SecretaryController::class);
-    Route::get('/secretaries/create', [SecretaryController::class, 'create'])->name('secretaries.create');
-    Route::post('/secretaries', [SecretaryController::class, 'store'])->name('secretaries.store');
-    Route::get('/secretaries/{secretary}/edit', [SecretaryController::class, 'edit'])->name('secretaries.edit');
-    Route::put('/secretaries/{secretary}', [SecretaryController::class, 'update'])->name('secretaries.update');
-    Route::delete('/secretaries/{secretary}', [SecretaryController::class, 'destroy'])->name('secretaries.destroy');
     
     // Gestion des spécialités
     Route::resource('specialites', SpecialiteController::class);
     
     // Gestion des départements
     Route::resource('departements', DepartementController::class);
+    
     // Rapports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports');
     Route::get('/reports/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
     Route::get('/reports/yearly', [ReportController::class, 'yearly'])->name('reports.yearly');
+    
     // Exports
     Route::get('/export/patients', [ExportController::class, 'patients'])->name('export.patients');
     Route::get('/export/appointments', [ExportController::class, 'appointments'])->name('export.appointments');
     Route::get('/export/invoices', [ExportController::class, 'invoices'])->name('export.invoices');
+    
     Route::get('/consultations/{consultation}/details', [ConsultationController::class, 'details'])->name('consultations.details');
     Route::get('/patient/prescriptions', [PrescriptionController::class, 'patientPrescriptions'])->name('patient.prescriptions');
     Route::get('/patient/invoices', [InvoiceController::class, 'patientInvoices'])->name('patient.invoices');
-    });
+});
 
-
-    Route::post('/test-upload', function(Request $request) {
-        if ($request->hasFile('test_image')) {
-            $path = $request->file('test_image')->store('test', 'public');
-            return "File uploaded to: " . $path;
-        }
-        return "No file uploaded";
-
-    });
-    
+// Test upload route
+Route::post('/test-upload', function(Request $request) {
+    if ($request->hasFile('test_image')) {
+        $path = $request->file('test_image')->store('test', 'public');
+        return "File uploaded to: " . $path;
+    }
+    return "No file uploaded";
+})->middleware('auth'); // ← Added auth middleware for security
