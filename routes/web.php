@@ -27,6 +27,8 @@ Route::get('/', function () {
 require __DIR__.'/auth.php';
    
 // Routes pour tous les utilisateurs authentifiés
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         $user = auth()->user();
